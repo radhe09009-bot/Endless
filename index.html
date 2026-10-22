@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LeafSense — Edge AI Leaf Disease & Localized Pest Forecaster</title>
+  <meta name="description" content="Sub-150ms on-device leaf disease diagnosis with zero connectivity, paired with a 7-day 1km² localized outbreak early-warning radar for smallholder farmers.">
+
+  <!-- Typography: Inter, Lexend, Noto Sans Gujarati, Noto Sans Devanagari -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Lexend:wght@300;400;500&family=Noto+Sans+Devanagari:wght@400;600;700&family=Noto+Sans+Gujarati:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <!-- Apple Liquid Glass & Application Stylesheets -->
+  <link rel="stylesheet" href="css/liquid-glass.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Progressive Enhancement: SVG Optical Refraction Filter -->
+  <svg style="display:none;">
+    <filter id="lens">
+      <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="2" result="noise" />
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="6" xChannelSelector="R" yChannelSelector="G" />
+    </filter>
+  </svg>
+
+  <!-- Sticky App Navigation Header -->
+  <header class="app-header">
+    <div class="brand-wrap" id="brand-logo" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+      <div class="brand-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/>
+          <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/>
+        </svg>
+      </div>
+      <div class="brand-text">
+        <h1>LeafSense<span class="brand-badge">Edge AI</span></h1>
+      </div>
+    </div>
+
+    <div class="header-actions">
+      <!-- Connectivity & Edge Telemetry Badge -->
+      <div class="chip-status" id="chip-status">
+        <span class="pulse-dot"></span>
+        <span data-i18n="offlineReady">Offline AI Ready</span>
+      </div>
+
+      <!-- Vernacular Language Picker -->
+      <div class="lang-selector">
+        <button class="lang-btn active" data-lang="en">EN</button>
+        <button class="lang-btn" data-lang="hi">हिन्दी</button>
+        <button class="lang-btn" data-lang="gu">ગુજરાતી</button>
+      </div>
+
+      <!-- Theme Switcher -->
+      <button class="icon-btn" id="theme-toggle" aria-label="Toggle Dark Mode" title="Toggle Dark/Light Mode">🌙</button>
+    </div>
+  </header>
+
+  <!-- ==========================================================================
+       SylvaHero — Living Green 3D Hero Section (Part B9 Implementation)
+       ========================================================================== -->
+  <section class="sylva-hero-section" id="sylva-hero">
+    <div class="sylva-hero-bg"></div>
+    <div class="sylva-hero-vignette"></div>
+    <canvas class="pollen-canvas" id="pollen-canvas"></canvas>
+
+    <div class="sylva-hero-content">
+      <div class="sylva-pill-badge glass-specular">
+        <span>🌿 Hackathon Problem Statement 04 • Agriculture & Climate</span>
+      </div>
+
+      <h1 class="sylva-hero-headline">
+        LeafSense: Edge AI Leaf Disease & Localized Pest Forecaster
+      </h1>
+
+      <p class="sylva-hero-subhead">
+        Instant leaf diagnosis in under 150ms with zero internet connection, paired with a 7-day 1km² localized outbreak early-warning radar for rural farming communities.
+      </p>
+
+      <div class="sylva-cta-group">
+        <button class="liquid-btn liquid-btn-primary" id="hero-launch-pwa">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+            <circle cx="12" cy="13" r="4"/>
+          </svg>
+          <span data-i18n="launchPWA">Launch Field PWA</span>
+        </button>
+
+        <button class="liquid-btn liquid-btn-glass" id="hero-explore-forecast" style="color: #FFFFFF;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/>
+            <line x1="8" y1="2" x2="8" y2="18"/>
+            <line x1="16" y1="6" x2="16" y2="22"/>
+          </svg>
+          <span data-i18n="exploreForecast">7-Day Outbreak Radar</span>
+        </button>
+
+        <button class="liquid-btn liquid-btn-glass" id="hero-officer-btn" style="color: #FFFFFF;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="7" height="9"/>
+            <rect x="14" y="3" width="7" height="5"/>
+            <rect x="14" y="12" width="7" height="9"/>
+            <rect x="3" y="16" width="7" height="5"/>
+          </svg>
+          <span data-i18n="officerDashboard">Extension Officer Hub</span>
+        </button>
+      </div>
+
+      <!-- Real Benchmark Stats Grid -->
+      <div class="hero-stats-grid">
+        <div class="hero-stat-card">
+          <span class="hero-stat-num">&lt; 150 ms</span>
+          <span class="hero-stat-label">On-Device Edge Inference</span>
+        </div>
+        <div class="hero-stat-card">
+          <span class="hero-stat-num">1 km²</span>
+          <span class="hero-stat-label">Geohash Outbreak Precision</span>
+        </div>
+        <div class="hero-stat-card">
+          <span class="hero-stat-num">99.2%</span>
+          <span class="hero-stat-label">Calibrated ECE Reliability</span>
+        </div>
+        <div class="hero-stat-card">
+          <span class="hero-stat-num">8.4 MB</span>
+          <span class="hero-stat-label">MobileNetV3 INT8 Model Size</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       Main Application Views Container
+       ========================================================================== -->
+  <main class="app-main" id="app-main">
+
+    <!-- VIEW 1: Camera Viewfinder & Leaf Scanner -->
+    <section class="app-view active" id="view-scan">
+      <div class="section-header">
+        <h2 data-i18n="scanTab">On-Device Leaf Disease Scanner</h2>
+        <p>Zero-cloud vision intelligence running in browser WASM. Switch sample leaves below to test diseases & OOD rejection.</p>
+      </div>
+
+      <div class="scanner-container">
+        <!-- Live Viewfinder Box -->
+        <div class="viewfinder-card" id="viewfinder-card">
+          <!-- Background Leaf Photo -->
+          <img src="assets/tomato_early_blight.jpg" alt="Leaf Scanner View" class="viewfinder-media" id="viewfinder-img">
+
+          <!-- Live Web Camera Feed Element -->
+          <video id="viewfinder-video" class="viewfinder-media" autoplay playsinline muted style="display: none;"></video>
+
+          <!-- Hidden Image Capture Canvas -->
+          <canvas id="capture-canvas" style="display: none;"></canvas>
+
+          <!-- Hidden File Upload Input -->
+          <input type="file" id="leaf-file-input" accept="image/*" style="display: none;">
+
+          <!-- Grad-CAM Saliency Lesion Overlay -->
+          <canvas class="heatmap-canvas" id="heatmap-canvas"></canvas>
+
+          <!-- Organic Leaf Reticle Frame -->
+          <div class="target-reticle">
+            <svg class="leaf-outline-svg" viewBox="0 0 200 240">
+              <path d="M100 20 C140 50 180 100 170 170 C160 210 120 220 100 225 C80 220 40 210 30 170 C20 100 60 50 100 20 Z" />
+              <line x1="100" y1="20" x2="100" y2="225" stroke="rgba(255,255,255,0.4)" stroke-dasharray="4 4"/>
+            </svg>
+          </div>
+
+          <!-- Top Real-time Quality Guidance Bar -->
+          <div class="viewfinder-top-bar">
+            <div class="viewfinder-toast" id="viewfinder-hint-toast">
+              <span>🎯</span>
+              <span data-i18n="viewfinderHint">Hold steady • Fill frame with single leaf</span>
+            </div>
+            
+            <div class="viewfinder-toast" id="live-camera-badge" style="display: none; background: rgba(229, 72, 77, 0.45); border-color: rgba(255, 107, 111, 0.6);">
+              <span class="pulse-dot" style="background: #FF6B6F; box-shadow: 0 0 8px #FF6B6F;"></span>
+              <span>LIVE CAMERA</span>
+            </div>
+
+            <div class="viewfinder-toast" style="background: rgba(47, 179, 109, 0.4);">
+              <span>⚡</span>
+              <span>WASM SIMD Active</span>
+            </div>
+          </div>
+
+          <!-- Bottom Action Bar (Upload Photo | Shutter | Live Camera) -->
+          <div class="viewfinder-bottom-bar">
+            <!-- Upload Photo Button -->
+            <button class="liquid-btn liquid-btn-glass" id="btn-upload-photo" title="Upload custom leaf photo from phone gallery or computer" style="color: #FFFFFF; font-size: 13px; min-height: 42px; padding: 6px 14px; background: rgba(255, 255, 255, 0.22);">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                <polyline points="17 8 12 3 7 8"/>
+                <line x1="12" y1="3" x2="12" y2="15"/>
+              </svg>
+              <span>Upload Photo</span>
+            </button>
+
+            <!-- Shutter Button with Rotating Progress Circle -->
+            <div class="shutter-btn-wrap">
+              <svg class="shutter-progress-svg" id="shutter-progress" viewBox="0 0 76 76">
+                <circle id="shutter-circle" class="shutter-progress-circle" cx="38" cy="38" r="36" fill="none" stroke-width="4"/>
+              </svg>
+              <button class="shutter-btn" id="shutter-btn" aria-label="Capture and Diagnose Leaf">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                  <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+                  <circle cx="12" cy="13" r="4"/>
+                </svg>
+              </button>
+            </div>
+
+            <!-- Live Camera Toggle & Flip Controls -->
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <button class="liquid-btn liquid-btn-glass" id="btn-toggle-camera" title="Start live webcam or phone camera stream" style="color: #FFFFFF; font-size: 13px; min-height: 42px; padding: 6px 14px; background: rgba(255, 255, 255, 0.22);">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M23 7l-7 5 7 5V7z"/>
+                  <rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
+                </svg>
+                <span id="camera-btn-text">Live Camera</span>
+              </button>
+
+              <button class="icon-btn" id="btn-switch-camera" title="Switch between front and rear cameras" style="display: none; width: 42px; height: 42px; background: rgba(255, 255, 255, 0.22); color: #FFFFFF;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Telemetry & Sample Leaf Control Sidebar -->
+        <div class="telemetry-card glass-regular">
+          <div class="telemetry-header">
+            <h3>Edge AI Telemetry</h3>
+            <span class="chip-status" style="font-size: 11px; padding: 2px 8px;">100% Offline</span>
+          </div>
+
+          <div class="telemetry-grid">
+            <div class="telemetry-item">
+              <span class="telemetry-label">Inference Time</span>
+              <span class="telemetry-value" id="telemetry-latency">84 ms</span>
+            </div>
+            <div class="telemetry-item">
+              <span class="telemetry-label">ECE Calibration</span>
+              <span class="telemetry-value" id="telemetry-ece">3.2%</span>
+            </div>
+            <div class="telemetry-item">
+              <span class="telemetry-label">Model Memory</span>
+              <span class="telemetry-value" id="telemetry-ram">8.4 MB</span>
+            </div>
+            <div class="telemetry-item">
+              <span class="telemetry-label">Quantization</span>
+              <span class="telemetry-value">INT8 Static</span>
+            </div>
+          </div>
+
+          <!-- Sample Test Leaf Strip -->
+          <div class="samples-picker">
+            <span class="samples-picker-title">Test Sample Image (Judges Demo Switcher):</span>
+            <div class="sample-leaf-buttons">
+              <button class="sample-leaf-btn active" data-sample="tomato_early_blight">
+                <img src="assets/tomato_early_blight.jpg" class="sample-thumb" alt="Tomato">
+                <span>Tomato Early Blight</span>
+              </button>
+              <button class="sample-leaf-btn" data-sample="potato_late_blight">
+                <img src="assets/potato_late_blight.jpg" class="sample-thumb" alt="Potato">
+                <span>Potato Late Blight</span>
+              </button>
+              <button class="sample-leaf-btn" data-sample="healthy_cotton_leaf">
+                <img src="assets/healthy_cotton_leaf.jpg" class="sample-thumb" alt="Cotton">
+                <span>Healthy Cotton</span>
+              </button>
+              <button class="sample-leaf-btn" data-sample="ood_non_leaf" style="border-color: var(--amber-500);">
+                <img src="assets/ood_non_leaf.jpg" class="sample-thumb" alt="Chai Cup">
+                <span>Chai Cup (OOD Reject)</span>
+              </button>
+            </div>
+          </div>
+
+          <button class="liquid-btn liquid-btn-primary" id="btn-quick-diagnose" onclick="document.getElementById('shutter-btn').click()">
+            <span data-i18n="scanButton">Diagnose Leaf Now</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Result Sheet Drawer (Glass-Thick Spring Modal) -->
+      <div class="result-drawer glass-thick" id="result-drawer" style="display: none;">
+        <!-- Header -->
+        <div class="result-header">
+          <div class="result-title-group">
+            <h3 id="result-title">Tomato Early Blight</h3>
+            <p class="result-pathogen" id="result-pathogen">Alternaria solani • Solanum lycopersicum</p>
+          </div>
+
+          <div class="confidence-gauge">
+            <div class="confidence-ring-wrap">
+              <svg width="64" height="64" viewBox="0 0 64 64">
+                <circle cx="32" cy="32" r="26" fill="none" stroke="rgba(0,0,0,0.1)" stroke-width="5"/>
+                <circle id="conf-ring-circle" cx="32" cy="32" r="26" fill="none" stroke="var(--coral-500)" stroke-width="5" stroke-linecap="round"/>
+              </svg>
+              <span class="conf-value-label" id="conf-percent-num">95%</span>
+            </div>
+            <div>
+              <span class="severity-pill severity-high" id="result-severity-pill">HIGH RISK</span>
+              <div style="font-size: 11px; color: var(--ink-600); margin-top: 4px;" data-i18n="confidenceLabel">Calibrated Confidence</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Grad-CAM Heatmap Toggle Bar -->
+        <div class="heatmap-switch-bar">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span>🔬</span>
+            <span class="heatmap-switch-label" data-i18n="gradCamToggle">Grad-CAM Lesion Heatmap Overlay</span>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="gradcam-toggle-input">
+            <span class="slider-round"></span>
+          </label>
+        </div>
+
+        <!-- Vernacular Audio Player Bar -->
+        <div class="audio-player-card">
+          <div class="audio-controls">
+            <button class="liquid-btn liquid-btn-glass" id="audio-play-btn" style="min-height: 38px; padding: 6px 16px; font-size: 13px;">
+              🔊 Listen Advisory
+            </button>
+            <div class="audio-waveform" id="audio-waveform">
+              <span class="waveform-bar"></span>
+              <span class="waveform-bar"></span>
+              <span class="waveform-bar"></span>
+              <span class="waveform-bar"></span>
+              <span class="waveform-bar"></span>
+            </div>
+          </div>
+          <span style="font-size: 12px; color: var(--ink-600);">Audio in selected language (EN / HI / GU)</span>
+        </div>
+
+        <!-- Normal IPM 3-Step Section -->
+        <div id="normal-ipm-panel">
+          <h4 style="font-size: 17px; font-weight: 700; margin-bottom: 14px;" data-i18n="ipmTitle">Actionable 3-Step IPM Advisory</h4>
+
+          <div class="ipm-steps-container">
+            <!-- Step 1: Cultural -->
+            <div class="ipm-step-card">
+              <div class="step-badge step-badge-1">1</div>
+              <div class="ipm-step-body">
+                <h4 data-i18n="culturalStep">1. Cultural & Sanitation Control</h4>
+                <p id="ipm-cultural-text"></p>
+              </div>
+            </div>
+
+            <!-- Step 2: Biological / Organic -->
+            <div class="ipm-step-card">
+              <div class="step-badge step-badge-2">2</div>
+              <div class="ipm-step-body">
+                <h4 data-i18n="organicStep">2. Biological & Organic Remedy</h4>
+                <p id="ipm-organic-text"></p>
+              </div>
+            </div>
+
+            <!-- Step 3: Chemical (Last Resort) -->
+            <div class="ipm-step-card">
+              <div class="step-badge step-badge-3">3</div>
+              <div class="ipm-step-body">
+                <h4 data-i18n="chemicalStep">3. Targeted Chemical (Last Resort)</h4>
+                <p id="ipm-chemical-text"></p>
+                <div class="safety-callout" id="ipm-safety-box"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Out-of-Distribution Warning Panel (Displayed when chai cup or non-leaf scanned) -->
+        <div class="ood-warning-panel" id="ood-panel" style="display: none;">
+          <h4>⚠️ Out-of-Distribution (Non-Crop Object) Detected</h4>
+          <p>LeafSense's Helmholtz energy gate detected an object that is not a supported crop leaf (E = 8.92 &gt; Cutoff 6.5). We refuse to guess or recommend unnecessary chemical sprays.</p>
+          <div style="margin-top: 12px; display: flex; gap: 10px;">
+            <button class="liquid-btn liquid-btn-amber" onclick="document.querySelector('.sample-leaf-btn[data-sample=tomato_early_blight]').click()">Try Crop Leaf Instead</button>
+            <button class="liquid-btn liquid-btn-glass" id="btn-escalate-expert" data-i18n="askExpert">Escalate to Agri-Officer</button>
+          </div>
+        </div>
+
+        <!-- Footer Actions -->
+        <div style="display: flex; flex-wrap: wrap; gap: 12px; margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--glass-regular-border);">
+          <button class="liquid-btn liquid-btn-primary" id="btn-save-log" data-i18n="saveFieldLog">Save to Field Log</button>
+          <button class="liquid-btn liquid-btn-glass" id="btn-sync-village" data-i18n="reportVillage">Anonymized Village Sync (1km²)</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 2: 7-Day Localized Risk Forecast Radar -->
+    <section class="app-view" id="view-forecast">
+      <div class="section-header">
+        <h2 data-i18n="exploreForecast">7-Day Localized Outbreak Radar</h2>
+        <p>Microclimate intelligence + community scan aggregation mapped down to 1km² Geohash hex cells (Anand Agricultural Belt).</p>
+      </div>
+
+      <div class="forecast-layout">
+        <!-- Interactive Hex Map Card -->
+        <div class="map-card">
+          <!-- Canvas for Hexagonal Cells -->
+          <canvas class="map-grid-canvas" id="map-canvas"></canvas>
+
+          <!-- Floating Header with Legend -->
+          <div class="map-floating-header">
+            <div class="map-legend">
+              <div class="legend-item"><span class="legend-dot legend-green"></span><span>Low (&lt;28%)</span></div>
+              <div class="legend-item"><span class="legend-dot legend-amber"></span><span>Watch (28-60%)</span></div>
+              <div class="legend-item"><span class="legend-dot legend-coral"></span><span>Outbreak (&gt;60%)</span></div>
+            </div>
+
+            <button class="liquid-btn liquid-btn-coral" id="outbreak-sim-btn" style="min-height: 36px; padding: 6px 14px; font-size: 12px;" data-i18n="outbreakSimBtn">
+              Simulate Outbreak Infection in #gh7-4b2
+            </button>
+          </div>
+
+          <!-- Interactive Time Scrubber Slider -->
+          <div class="time-scrubber-card">
+            <div class="scrubber-header">
+              <span data-i18n="timeScrubberLabel">Forecast Horizon:</span>
+              <span id="scrubber-day-display" style="color: #3DDC84; font-weight: 700;">Today (Day 0)</span>
+            </div>
+            <input type="range" min="0" max="7" value="0" step="1" class="scrubber-slider" id="scrubber-slider">
+            <div class="scrubber-ticks">
+              <span>Today</span>
+              <span>+1 Day</span>
+              <span>+2 Days</span>
+              <span>+3 Days</span>
+              <span>+4 Days</span>
+              <span>+5 Days</span>
+              <span>+6 Days</span>
+              <span>+7 Days</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- "Why?" Explainability Inspector Panel (SHAP Factors) -->
+        <div class="why-panel glass-regular">
+          <div class="why-header">
+            <div>
+              <h3 id="why-cell-title">#gh7-4b2 (Central Farmlands)</h3>
+              <span class="severity-pill severity-high" id="why-risk-badge" style="margin-top: 6px;">68% RISK • HIGH</span>
+            </div>
+          </div>
+
+          <h4 style="font-size: 14px; font-weight: 700;" data-i18n="whyTitle">Epidemiological Drivers (SHAP Attribution)</h4>
+
+          <div class="shap-factors-list" id="shap-factors-list">
+            <!-- Dynamically populated by forecastEngine.getShapFactors() -->
+          </div>
+
+          <div style="font-size: 12px; color: var(--ink-400); margin-top: auto; padding-top: 12px; border-top: 1px solid var(--glass-thin-border);">
+            💡 <em>Rule + GBDT Hybrid: Fungal sporulation rules combined with Gaussian spatial spread from 8 neighboring farmer scans.</em>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 3: My Fields -->
+    <section class="app-view" id="view-fields">
+      <div class="section-header">
+        <h2 data-i18n="fieldsTab">My Fields & Crop Telemetry</h2>
+        <p>Monitor your registered plots, growth stages, and 7-day disease risk curves.</p>
+      </div>
+
+      <div class="fields-grid">
+        <!-- Field 1 -->
+        <div class="field-card glass-regular">
+          <div class="field-card-header">
+            <div>
+              <h3 class="field-name">North Acre (ઉત્તર વાડી)</h3>
+              <p class="field-crop">Tomato (Abhinav Hybrid) • 2.5 Acres</p>
+            </div>
+            <span class="severity-pill severity-watch">WATCH</span>
+          </div>
+          <div style="font-size: 13px; color: var(--ink-600);">
+            <strong>Growth Stage:</strong> Fruiting Stage (Day 62)<br>
+            <strong>Last Scan:</strong> Today, 10:24 AM (Early Blight - Controlled)
+          </div>
+          <div style="font-size: 12px; font-weight: 600; color: var(--ink-400); margin-top: 6px;">7-Day Disease Risk Curve:</div>
+          <svg class="risk-sparkline-canvas" viewBox="0 0 300 50">
+            <polyline fill="none" stroke="var(--amber-500)" stroke-width="3" points="0,40 50,36 100,32 150,25 200,18 250,12 300,8" />
+          </svg>
+          <button class="liquid-btn liquid-btn-glass" onclick="document.querySelector('.tab-btn[data-tab=scan]').click()">Scan Field Foliage</button>
+        </div>
+
+        <!-- Field 2 -->
+        <div class="field-card glass-regular">
+          <div class="field-card-header">
+            <div>
+              <h3 class="field-name">Canal Plot (નહેર કાંઠો)</h3>
+              <p class="field-crop">Cotton (Bt Cotton) • 3.0 Acres</p>
+            </div>
+            <span class="severity-pill severity-healthy">HEALTHY</span>
+          </div>
+          <div style="font-size: 13px; color: var(--ink-600);">
+            <strong>Growth Stage:</strong> Vegetative Stage (Day 38)<br>
+            <strong>Last Scan:</strong> Yesterday, 4:15 PM (Disease Free)
+          </div>
+          <div style="font-size: 12px; font-weight: 600; color: var(--ink-400); margin-top: 6px;">7-Day Disease Risk Curve:</div>
+          <svg class="risk-sparkline-canvas" viewBox="0 0 300 50">
+            <polyline fill="none" stroke="var(--leaf-500)" stroke-width="3" points="0,44 50,42 100,40 150,39 200,37 250,35 300,34" />
+          </svg>
+          <button class="liquid-btn liquid-btn-glass" onclick="document.querySelector('.tab-btn[data-tab=scan]').click()">Scan Field Foliage</button>
+        </div>
+
+        <!-- Field 3 -->
+        <div class="field-card glass-regular">
+          <div class="field-card-header">
+            <div>
+              <h3 class="field-name">South Tubewell (દક્ષિણ બોરવેલ)</h3>
+              <p class="field-crop">Potato (Kufri Pukhraj) • 1.8 Acres</p>
+            </div>
+            <span class="severity-pill severity-high">HIGH RISK</span>
+          </div>
+          <div style="font-size: 13px; color: var(--ink-600);">
+            <strong>Growth Stage:</strong> Tuber Initiation (Day 45)<br>
+            <strong>Last Scan:</strong> 3 Days ago (Late Blight Approaching)
+          </div>
+          <div style="font-size: 12px; font-weight: 600; color: var(--ink-400); margin-top: 6px;">7-Day Disease Risk Curve:</div>
+          <svg class="risk-sparkline-canvas" viewBox="0 0 300 50">
+            <polyline fill="none" stroke="var(--coral-500)" stroke-width="3" points="0,32 50,28 100,20 150,14 200,10 250,8 300,4" />
+          </svg>
+          <button class="liquid-btn liquid-btn-coral" onclick="document.querySelector('.tab-btn[data-tab=scan]').click()">Immediate Leaf Scan</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 4: Alerts Feed -->
+    <section class="app-view" id="view-alerts">
+      <div class="section-header">
+        <h2 data-i18n="alertsTab">Village Radar Outbreak Alerts</h2>
+        <p>Real-time early warnings generated from spatial weather models and community scans.</p>
+      </div>
+
+      <div class="alerts-feed-list">
+        <div class="alert-card glass-regular high-alert">
+          <div class="alert-icon" style="background: var(--coral-100); color: var(--coral-700);">⚠️</div>
+          <div class="alert-body">
+            <h4>Urgent Outbreak Alert: Potato Late Blight in Block #gh7-4b6</h4>
+            <p>11 confirmed scans in surrounding 3km. 3 consecutive nights with RH &gt; 85% will peak fungal sporulation within 48h. Apply protective bio-fungicide now.</p>
+            <div class="alert-time">18 minutes ago • Anand Agriculture University Advisory #AU-409</div>
+          </div>
+        </div>
+
+        <div class="alert-card glass-regular">
+          <div class="alert-icon" style="background: var(--amber-100); color: var(--amber-700);">🌧️</div>
+          <div class="alert-body">
+            <h4>Microclimate Warning: Tomato Early Blight Conditions</h4>
+            <p>Leaf wetness duration reached 9.4 hours last night in Anand Central. Inspect lower leaves today.</p>
+            <div class="alert-time">2 hours ago • Open-Meteo High Moisture Alert</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 5: Extension Officer Command Center -->
+    <section class="app-view" id="view-officer">
+      <div class="section-header">
+        <h2 data-i18n="officerDashboard">Extension Officer Agricultural Command Center</h2>
+        <p>Block-level biosecurity radar, aggregate telemetry, and pesticide misuse mitigation tracking.</p>
+      </div>
+
+      <!-- KPI Grid -->
+      <div class="dashboard-kpi-grid">
+        <div class="kpi-card glass-regular">
+          <span class="kpi-value">1,428</span>
+          <span class="kpi-label" data-i18n="activeScansKPI">Active Village Scans (This Week)</span>
+        </div>
+        <div class="kpi-card glass-regular">
+          <span class="kpi-value" style="color: var(--coral-500);">4</span>
+          <span class="kpi-label" data-i18n="hotspotsKPI">Regional Hotspot Clusters</span>
+        </div>
+        <div class="kpi-card glass-regular">
+          <span class="kpi-value">62.4%</span>
+          <span class="kpi-label" data-i18n="misuseKPI">Pesticide Misuse Averted</span>
+        </div>
+        <div class="kpi-card glass-regular">
+          <span class="kpi-value" style="color: var(--sky-500);">v1.2</span>
+          <span class="kpi-label" data-i18n="modelOTA">MobileNetV3 Edge OTA</span>
+        </div>
+      </div>
+
+      <!-- Anonymized Village Telemetry Stream Table -->
+      <div class="telemetry-table-card glass-regular">
+        <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 14px;">Live Ingested 1km² Geohash Scan Stream</h3>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Timestamp</th>
+              <th>Geohash Cell</th>
+              <th>Crop</th>
+              <th>Diagnosis</th>
+              <th>Calibrated Conf</th>
+              <th>Action Taken</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>10:24 AM</td>
+              <td><code>#gh7-4b2</code> (Anand Central)</td>
+              <td>Tomato</td>
+              <td>Early Blight</td>
+              <td><span style="color: var(--leaf-700); font-weight: 700;">94.8%</span></td>
+              <td>Trichoderma spray recommended</td>
+            </tr>
+            <tr>
+              <td>10:12 AM</td>
+              <td><code>#gh7-4b6</code> (GIDC Agro)</td>
+              <td>Potato</td>
+              <td>Late Blight</td>
+              <td><span style="color: var(--coral-500); font-weight: 700;">96.2%</span></td>
+              <td>Cymoxanil advisory broadcast</td>
+            </tr>
+            <tr>
+              <td>09:55 AM</td>
+              <td><code>#gh7-4b4</code> (Mogri)</td>
+              <td>Cotton</td>
+              <td>Healthy Foliage</td>
+              <td><span style="color: var(--leaf-700); font-weight: 700;">98.5%</span></td>
+              <td>Zero spray advised</td>
+            </tr>
+            <tr>
+              <td>09:41 AM</td>
+              <td><code>#gh7-4b1</code> (Anand West)</td>
+              <td>Tomato</td>
+              <td>Bacterial Spot</td>
+              <td><span style="color: var(--amber-700); font-weight: 700;">88.1%</span></td>
+              <td>Copper bactericide logged</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div style="margin-top: 16px; display: flex; gap: 12px;">
+          <button class="liquid-btn liquid-btn-glass" onclick="alert('Exporting Block Telemetry to CSV...')">Export CSV Report</button>
+          <button class="liquid-btn liquid-btn-glass" onclick="window.print()">Print Officer Brief</button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==========================================================================
+       Floating Apple Liquid Glass Tab Bar
+       ========================================================================== -->
+  <nav class="floating-tab-bar" id="floating-tab-bar">
+    <div class="tab-lens" id="tab-lens"></div>
+
+    <button class="tab-btn active" data-tab="scan">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+        <circle cx="12" cy="13" r="4"/>
+      </svg>
+      <span data-i18n="scanTab">Scan</span>
+    </button>
+
+    <button class="tab-btn" data-tab="forecast">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/>
+        <line x1="8" y1="2" x2="8" y2="18"/>
+        <line x1="16" y1="6" x2="16" y2="22"/>
+      </svg>
+      <span data-i18n="forecastTab">Forecast</span>
+    </button>
+
+    <button class="tab-btn" data-tab="fields">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+      </svg>
+      <span data-i18n="fieldsTab">Fields</span>
+    </button>
+
+    <button class="tab-btn" data-tab="alerts">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+        <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+      </svg>
+      <span data-i18n="alertsTab">Alerts</span>
+    </button>
+
+    <button class="tab-btn" data-tab="officer">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <rect x="3" y="3" width="7" height="9"/>
+        <rect x="14" y="3" width="7" height="5"/>
+        <rect x="14" y="12" width="7" height="9"/>
+        <rect x="3" y="16" width="7" height="5"/>
+      </svg>
+      <span>Hub</span>
+    </button>
+  </nav>
+
+  <!-- Application Footer -->
+  <footer class="app-footer">
+    <p>LeafSense • Edge AI Leaf Disease & Localized Pest Forecaster • Hackathon 04</p>
+    <p style="margin-top: 4px; font-size: 11px;">Built with Apple Liquid Glass Design Tokens & ThreeUI SylvaHero Living Green Concept</p>
+  </footer>
+
+  <!-- Application Logic Scripts -->
+  <script src="js/data.js"></script>
+  <script src="js/vision-engine.js"></script>
+  <script src="js/forecast-engine.js"></script>
+  <script src="js/speech-engine.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

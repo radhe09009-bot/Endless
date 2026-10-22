@@ -1,0 +1,350 @@
+/* ==========================================================================
+   LeafSense — Apple Liquid Glass Design System
+   Conforming to Part B: Design Doc Specification
+   ========================================================================== */
+
+:root {
+  /* Color Palette — Light Mode Default */
+  --bg-base: #F4F8F2;
+  --bg-surface: #FFFFFF;
+  --bg-elevated: #EAF2E8;
+
+  --leaf-500: #2FB36D;
+  --leaf-600: #249A5C;
+  --leaf-700: #17794A;
+  --leaf-100: #E3F8ED;
+  --leaf-glow: rgba(47, 179, 109, 0.35);
+
+  --amber-500: #F5A524;
+  --amber-700: #B8740B;
+  --amber-100: #FEF4E6;
+  --amber-glow: rgba(245, 165, 36, 0.35);
+
+  --coral-500: #E5484D;
+  --coral-700: #B3282D;
+  --coral-100: #FEECEE;
+  --coral-glow: rgba(229, 72, 77, 0.35);
+
+  --sky-500: #3B82F6;
+  --sky-700: #1D4ED8;
+  --sky-100: #EFF6FF;
+
+  --ink-900: #0F1A12;
+  --ink-700: #2C3E32;
+  --ink-600: #4A5A4F;
+  --ink-400: #7E9084;
+  --ink-200: #D2DCD4;
+  --ink-white: #FFFFFF;
+
+  /* Glass Material Tokens */
+  --glass-thin-bg: rgba(255, 255, 255, 0.22);
+  --glass-thin-blur: 14px;
+  --glass-thin-border: rgba(255, 255, 255, 0.45);
+
+  --glass-regular-bg: rgba(255, 255, 255, 0.32);
+  --glass-regular-blur: 24px;
+  --glass-regular-border: rgba(255, 255, 255, 0.55);
+
+  --glass-thick-bg: rgba(255, 255, 255, 0.55);
+  --glass-thick-blur: 40px;
+  --glass-thick-border: rgba(255, 255, 255, 0.70);
+
+  --glass-dark-bg: rgba(11, 18, 13, 0.52);
+  --glass-dark-blur: 28px;
+  --glass-dark-border: rgba(255, 255, 255, 0.18);
+
+  /* Specular Rim & Shadows */
+  --glass-shadow-sm: 0 4px 16px -2px rgba(15, 26, 18, 0.08), 0 1px 3px 0 rgba(15, 26, 18, 0.04);
+  --glass-shadow-md: 0 12px 32px -4px rgba(15, 26, 18, 0.12), 0 4px 12px -2px rgba(15, 26, 18, 0.06);
+  --glass-shadow-lg: 0 24px 48px -6px rgba(15, 26, 18, 0.18), 0 8px 24px -3px rgba(15, 26, 18, 0.08);
+  --glass-inner-light: inset 0 1px 1px 0 rgba(255, 255, 255, 0.65), inset 0 -1px 1px 0 rgba(0, 0, 0, 0.05);
+
+  /* Spring Motion Curves */
+  --spring-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --spring-smooth: cubic-bezier(0.16, 1, 0.3, 1);
+  --duration-fast: 220ms;
+  --duration-normal: 340ms;
+  --duration-slow: 480ms;
+
+  /* Concentric Corner Radii */
+  --radius-sm: 12px;
+  --radius-md: 20px;
+  --radius-lg: 28px;
+  --radius-xl: 36px;
+  --radius-pill: 9999px;
+
+  /* Typography Scale */
+  --font-family-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-family-hero: 'Lexend', var(--font-family-sans);
+  --font-family-vernacular: 'Noto Sans Gujarati', 'Noto Sans Devanagari', var(--font-family-sans);
+}
+
+/* Dark Mode Overrides */
+[data-theme="dark"] {
+  --bg-base: #0B120D;
+  --bg-surface: #141F17;
+  --bg-elevated: #1D2B21;
+
+  --leaf-500: #3DDC84;
+  --leaf-600: #2FB36D;
+  --leaf-700: #249A5C;
+  --leaf-100: rgba(61, 220, 132, 0.15);
+
+  --amber-500: #FFB84D;
+  --amber-700: #F5A524;
+  --amber-100: rgba(255, 184, 77, 0.15);
+
+  --coral-500: #FF6B6F;
+  --coral-700: #E5484D;
+  --coral-100: rgba(255, 107, 111, 0.15);
+
+  --sky-500: #60A5FA;
+  --sky-700: #3B82F6;
+  --sky-100: rgba(96, 165, 250, 0.15);
+
+  --ink-900: #F2F7F3;
+  --ink-700: #D8E5DA;
+  --ink-600: #AAB8AE;
+  --ink-400: #6E8274;
+  --ink-200: #2C3E32;
+
+  --glass-thin-bg: rgba(20, 31, 23, 0.45);
+  --glass-thin-border: rgba(255, 255, 255, 0.12);
+
+  --glass-regular-bg: rgba(20, 31, 23, 0.65);
+  --glass-regular-border: rgba(255, 255, 255, 0.16);
+
+  --glass-thick-bg: rgba(20, 31, 23, 0.85);
+  --glass-thick-border: rgba(255, 255, 255, 0.22);
+
+  --glass-dark-bg: rgba(7, 11, 8, 0.75);
+  --glass-dark-border: rgba(255, 255, 255, 0.10);
+
+  --glass-shadow-sm: 0 4px 16px -2px rgba(0, 0, 0, 0.35);
+  --glass-shadow-md: 0 12px 32px -4px rgba(0, 0, 0, 0.50);
+  --glass-shadow-lg: 0 24px 48px -6px rgba(0, 0, 0, 0.65);
+  --glass-inner-light: inset 0 1px 1px 0 rgba(255, 255, 255, 0.18), inset 0 -1px 1px 0 rgba(0, 0, 0, 0.35);
+}
+
+/* Glass Material Utility Classes */
+
+.glass-thin {
+  background: var(--glass-thin-bg);
+  backdrop-filter: blur(var(--glass-thin-blur)) saturate(140%);
+  -webkit-backdrop-filter: blur(var(--glass-thin-blur)) saturate(140%);
+  border: 1px solid var(--glass-thin-border);
+  box-shadow: var(--glass-shadow-sm), var(--glass-inner-light);
+  border-radius: var(--radius-sm);
+  position: relative;
+}
+
+.glass-regular {
+  background: var(--glass-regular-bg);
+  backdrop-filter: blur(var(--glass-regular-blur)) saturate(170%);
+  -webkit-backdrop-filter: blur(var(--glass-regular-blur)) saturate(170%);
+  border: 1px solid var(--glass-regular-border);
+  box-shadow: var(--glass-shadow-md), var(--glass-inner-light);
+  border-radius: var(--radius-md);
+  position: relative;
+}
+
+.glass-thick {
+  background: var(--glass-thick-bg);
+  backdrop-filter: blur(var(--glass-thick-blur)) saturate(190%);
+  -webkit-backdrop-filter: blur(var(--glass-thick-blur)) saturate(190%);
+  border: 1px solid var(--glass-thick-border);
+  box-shadow: var(--glass-shadow-lg), var(--glass-inner-light);
+  border-radius: var(--radius-lg);
+  position: relative;
+}
+
+.glass-dark {
+  background: var(--glass-dark-bg);
+  backdrop-filter: blur(var(--glass-dark-blur)) saturate(160%);
+  -webkit-backdrop-filter: blur(var(--glass-dark-blur)) saturate(160%);
+  border: 1px solid var(--glass-dark-border);
+  box-shadow: var(--glass-shadow-md), inset 0 1px 1px 0 rgba(255, 255, 255, 0.15);
+  border-radius: var(--radius-md);
+  color: #FFFFFF;
+  position: relative;
+}
+
+/* Specular Edge Highlight Gradient (Apple Refraction Mimic) */
+.glass-specular::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 40%;
+  border-radius: inherit;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.40) 0%, rgba(255, 255, 255, 0.05) 60%, transparent 100%);
+  pointer-events: none;
+  opacity: 0.8;
+  z-index: 1;
+}
+
+/* Liquid Button Base */
+.liquid-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 48px;
+  padding: 12px 24px;
+  border-radius: var(--radius-pill);
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform var(--duration-fast) var(--spring-bounce),
+              box-shadow var(--duration-fast) ease,
+              background var(--duration-fast) ease;
+  user-select: none;
+  border: none;
+  text-decoration: none;
+}
+
+.liquid-btn:hover {
+  transform: translateY(-2px) scale(1.02);
+}
+
+.liquid-btn:active {
+  transform: translateY(1px) scale(0.98);
+}
+
+.liquid-btn-primary {
+  background: linear-gradient(135deg, var(--leaf-500) 0%, var(--leaf-700) 100%);
+  color: #FFFFFF;
+  box-shadow: 0 8px 24px -4px var(--leaf-glow), inset 0 1px 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+.liquid-btn-primary:hover {
+  box-shadow: 0 12px 28px -2px var(--leaf-glow), inset 0 1px 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+.liquid-btn-glass {
+  background: var(--glass-regular-bg);
+  backdrop-filter: blur(var(--glass-regular-blur)) saturate(170%);
+  border: 1px solid var(--glass-regular-border);
+  color: var(--ink-900);
+  box-shadow: var(--glass-shadow-sm), var(--glass-inner-light);
+}
+
+.liquid-btn-glass:hover {
+  background: var(--glass-thick-bg);
+  box-shadow: var(--glass-shadow-md), var(--glass-inner-light);
+}
+
+.liquid-btn-amber {
+  background: linear-gradient(135deg, var(--amber-500) 0%, var(--amber-700) 100%);
+  color: #FFFFFF;
+  box-shadow: 0 8px 24px -4px var(--amber-glow);
+}
+
+.liquid-btn-coral {
+  background: linear-gradient(135deg, var(--coral-500) 0%, var(--coral-700) 100%);
+  color: #FFFFFF;
+  box-shadow: 0 8px 24px -4px var(--coral-glow);
+}
+
+/* Floating Glass Tab Bar */
+.floating-tab-bar {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: var(--radius-pill);
+  background: var(--glass-thick-bg);
+  backdrop-filter: blur(32px) saturate(180%);
+  -webkit-backdrop-filter: blur(32px) saturate(180%);
+  border: 1px solid var(--glass-thick-border);
+  box-shadow: var(--glass-shadow-lg), var(--glass-inner-light);
+  transition: transform var(--duration-normal) var(--spring-smooth), opacity var(--duration-normal) ease;
+}
+
+.tab-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 10px 18px;
+  min-width: 68px;
+  min-height: 52px;
+  border-radius: var(--radius-pill);
+  border: none;
+  background: transparent;
+  color: var(--ink-600);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: color var(--duration-fast) ease, transform var(--duration-fast) var(--spring-bounce);
+  position: relative;
+  z-index: 2;
+}
+
+.tab-btn svg {
+  width: 22px;
+  height: 22px;
+  transition: transform var(--duration-fast) var(--spring-bounce);
+}
+
+.tab-btn:hover {
+  color: var(--ink-900);
+  transform: translateY(-1px);
+}
+
+.tab-btn.active {
+  color: var(--leaf-700);
+  font-weight: 700;
+}
+
+[data-theme="dark"] .tab-btn.active {
+  color: var(--leaf-500);
+}
+
+.tab-btn.active svg {
+  transform: scale(1.15);
+}
+
+/* Sliding Glass Lens for Tab Bar */
+.tab-lens {
+  position: absolute;
+  top: 6px;
+  bottom: 6px;
+  border-radius: var(--radius-pill);
+  background: rgba(47, 179, 109, 0.16);
+  border: 1px solid rgba(47, 179, 109, 0.35);
+  box-shadow: 0 2px 10px rgba(47, 179, 109, 0.18), inset 0 1px 1px rgba(255, 255, 255, 0.6);
+  transition: left var(--duration-normal) var(--spring-bounce), width var(--duration-normal) var(--spring-bounce);
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Accessibility & Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@media (prefers-contrast: more) {
+  :root {
+    --glass-thin-bg: #FFFFFF;
+    --glass-regular-bg: #FFFFFF;
+    --glass-thick-bg: #FFFFFF;
+    --glass-thin-border: #0F1A12;
+    --glass-regular-border: #0F1A12;
+    --glass-thick-border: #0F1A12;
+    --ink-600: #0F1A12;
+  }
+}
